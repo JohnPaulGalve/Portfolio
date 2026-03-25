@@ -1,0 +1,881 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>John Paul G. Galve — Portfolio</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Playfair+Display:wght@700;900&family=DM+Serif+Display&family=Courier+Prime:wght@400;700&display=swap" rel="stylesheet"/>
+  <style>
+
+    /* ══════════════════════════════════════
+       VARIABLES
+    ══════════════════════════════════════ */
+    :root {
+      --green-dark:  #1a2e1a;
+      --green-mid:   #2d5a27;
+      --green-light: #4a8a3f;
+      --green-pale:  #a8c5a0;
+      --green-mist:  #d4e8ce;
+      --beige-mid:   #c4a882;
+      --beige-light: #e8d5b7;
+      --beige-pale:  #f5ede0;
+      --beige-cream: #faf6ee;
+      --brown:       #6b4c2a;
+      --black:       #0a0a0a;
+      --off-black:   #1c1c1c;
+    }
+
+    /* ══════════════════════════════════════
+       RESET & BASE
+    ══════════════════════════════════════ */
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Courier Prime', monospace;
+      background-color: var(--beige-cream);
+      color: var(--black);
+      overflow-x: hidden;
+    }
+
+    /* grain texture overlay */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 9999;
+    }
+
+    /* ══════════════════════════════════════
+       CSS ANIMATIONS  (simple & debuggable)
+    ══════════════════════════════════════ */
+
+    /* 1. Page load fade-up — applied directly to elements */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* 2. Blinking cursor */
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50%       { opacity: 0; }
+    }
+
+    /* ══════════════════════════════════════
+       NAV
+    ══════════════════════════════════════ */
+    nav {
+      display: flex;
+      align-items: center;
+      padding: 20px 48px;
+      background: var(--beige-cream);
+      border-bottom: 2px solid var(--green-dark);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      animation: fadeUp 0.5s ease both;
+    }
+
+    .nav-links {
+      display: flex;
+      width: 100%;
+      justify-content: space-evenly;
+      list-style: none;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      color: var(--black);
+      font-family: 'Space Mono', monospace;
+      font-size: 0.82rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      position: relative;
+      padding-bottom: 3px;
+      transition: color 0.2s;
+    }
+
+    /* underline slide on hover — pure CSS */
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0;
+      width: 0; height: 2px;
+      background: var(--green-mid);
+      transition: width 0.25s ease;
+    }
+    .nav-links a:hover { color: var(--green-mid); }
+    .nav-links a:hover::after { width: 100%; }
+
+    /* ══════════════════════════════════════
+       HERO  — the big box is now the full section background
+    ══════════════════════════════════════ */
+    #home {
+      position: relative;
+      min-height: 88vh;
+      display: flex;
+      align-items: center;
+      overflow: hidden;
+
+      /*
+        ┌─────────────────────────────────────────────────────────┐
+        │  BACKGROUND PLACEHOLDER                                 │
+        │  This entire section is your image placeholder.        │
+        │  To add your real image later, set:                     │
+        │    background-image: url('your-photo.jpg');             │
+        │    background-size: cover;                              │
+        │    background-position: center;                         │
+        │  The beige tint overlay below will keep text readable.  │
+        └─────────────────────────────────────────────────────────┘
+      */
+      background-color: var(--beige-light);
+      background-size: cover;
+      background-position: center;
+    }
+
+    /* tint overlay — keeps text readable over any future image */
+    #home::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        105deg,
+        rgba(250,246,238,0.92) 0%,
+        rgba(250,246,238,0.78) 50%,
+        rgba(212,232,206,0.50) 100%
+      );
+      z-index: 1;
+    }
+
+    /* subtle grid overlay on hero */
+    #home::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(45,90,39,0.055) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(45,90,39,0.055) 1px, transparent 1px);
+      background-size: 44px 44px;
+      z-index: 2;
+      pointer-events: none;
+    }
+
+    /* text content sits above overlays */
+    .hero-content {
+      position: relative;
+      z-index: 3;
+      padding: 72px 48px;
+      max-width: 600px;
+      animation: fadeUp 0.6s 0.1s ease both;
+    }
+
+    .hero-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2rem, 4vw, 3.2rem);
+      font-weight: 900;
+      line-height: 1.1;
+      color: var(--black);
+      margin-bottom: 22px;
+    }
+
+    .hero-title span { color: var(--green-mid); }
+
+    .blink {
+      display: inline-block;
+      animation: blink 1s step-end infinite;
+    }
+
+    .hero-desc {
+      font-size: 0.88rem;
+      line-height: 1.85;
+      color: var(--off-black);
+      margin-bottom: 36px;
+      max-width: 480px;
+    }
+
+    /* 5 small square social placeholders */
+    .hero-socials { display: flex; gap: 12px; }
+
+    .social-box {
+      width: 42px;
+      height: 42px;
+      background: var(--beige-light);
+      border: 1.5px solid var(--green-pale);
+      border-radius: 6px;
+      transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+    .social-box:hover {
+      transform: translateY(-4px);
+      border-color: var(--green-mid);
+      box-shadow: 0 6px 14px rgba(45,90,39,0.18);
+    }
+
+    /* ══════════════════════════════════════
+       SHARED SECTION STYLES
+    ══════════════════════════════════════ */
+    section { padding: 72px 48px; }
+
+    .section-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2rem, 5vw, 3.2rem);
+      font-weight: 900;
+      text-align: center;
+      margin-bottom: 52px;
+      letter-spacing: -0.01em;
+    }
+
+    .section-title::after {
+      content: '';
+      display: block;
+      width: 52px;
+      height: 3px;
+      background: var(--green-mid);
+      margin: 12px auto 0;
+      border-radius: 2px;
+    }
+
+    /* ══════════════════════════════════════
+       ABOUT
+    ══════════════════════════════════════ */
+    #about {
+      background: var(--green-dark);
+    }
+
+    #about .section-title { color: var(--beige-cream); }
+    #about .section-title::after { background: var(--green-light); }
+
+    .about-grid {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 56px;
+      align-items: center;
+      max-width: 860px;
+      margin: 0 auto;
+    }
+
+    /* circle avatar */
+    .avatar-placeholder {
+      width: 210px;
+      height: 210px;
+      border-radius: 50%;
+      background: var(--beige-light);
+      border: 3px solid var(--green-light);
+      flex-shrink: 0;
+      object-fit: cover;
+      object-position: center;
+      display: block;
+    }
+
+    .about-name {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.8rem;
+      color: var(--beige-cream);
+      margin-bottom: 16px;
+    }
+
+    .about-text {
+      font-size: 0.87rem;
+      line-height: 1.95;
+      color: var(--green-mist);
+      text-align: justify;
+    }
+
+    /* ══════════════════════════════════════
+       SKILLS
+    ══════════════════════════════════════ */
+    #skills { background: var(--beige-pale); }
+    #skills .section-title { color: var(--black); }
+
+    .skills-grid {
+      display: flex;
+      gap: 20px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .skill-card {
+      width: 130px;
+      height: 150px;
+      background: var(--beige-light);
+      border: 2px solid var(--green-pale);
+      border-radius: 12px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-end;
+      padding-bottom: 16px;
+      font-family: 'Space Mono', monospace;
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      color: var(--black);
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+    }
+
+    /* image inside skill card */
+    .skill-card img {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -65%);
+      width: 60px;
+      height: 60px;
+      object-fit: contain;
+    }
+
+    /* label sits at the bottom */
+    .skill-card span {
+      position: relative;
+      z-index: 1;
+    }
+
+    /* top area tint — shows when no image is present */
+    .skill-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 65%;
+      background: var(--beige-mid);
+      opacity: 0.3;
+    }
+
+    .skill-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 10px 24px rgba(26,46,26,0.2);
+      border-color: var(--green-mid);
+    }
+
+    /* ══════════════════════════════════════
+       PROJECTS
+    ══════════════════════════════════════ */
+    #projects {
+      background: linear-gradient(160deg, var(--beige-cream) 0%, var(--green-mist) 100%);
+    }
+    #projects .section-title { color: var(--black); }
+    #projects .section-title::after { background: var(--brown); }
+
+    /* clickable hint below the title */
+    .projects-hint {
+      text-align: center;
+      font-family: 'Space Mono', monospace;
+      font-size: 0.72rem;
+      letter-spacing: 0.1em;
+      color: var(--brown);
+      margin-top: -36px;
+      margin-bottom: 48px;
+      opacity: 0.75;
+    }
+
+    .projects-hint::before {
+      content: '↗ ';
+    }
+
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 28px;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    /* wrapper holds the card + label below it */
+    .project-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+    }
+
+    .project-label {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.07em;
+      color: var(--black);
+      text-transform: uppercase;
+    }
+
+    .project-card {
+      width: 100%;
+      aspect-ratio: 4/3;
+      background: var(--beige-light);
+      border: 2px solid var(--green-pale);
+      border-radius: 16px;
+      position: relative;
+      overflow: hidden;
+      transition: box-shadow 0.25s ease, border-color 0.25s ease, transform 0.25s ease;
+      cursor: pointer;
+    }
+
+    .project-card:hover {
+      transform: scale(1.07);
+      box-shadow: 0 16px 40px rgba(26,46,26,0.28);
+      border-color: var(--green-mid);
+    }
+
+    /* subtle click pulse */
+    .project-card:active {
+      transform: scale(0.97);
+      box-shadow: 0 4px 12px rgba(26,46,26,0.18);
+    }
+
+    /* description overlay — hidden by default, fades in on card hover */
+    .project-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(26, 46, 26, 0.82);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      gap: 8px;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      border-radius: 14px;
+    }
+
+    .project-card:hover .project-overlay { opacity: 1; }
+
+    .project-overlay-title {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--green-mist);
+    }
+
+    .project-overlay-desc {
+      font-family: 'Courier Prime', monospace;
+      font-size: 0.78rem;
+      line-height: 1.6;
+      color: var(--beige-light);
+      text-align: center;
+    }
+
+    /* project background image */
+    .project-img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      border-radius: 14px;
+    }
+
+    /* corner accent brackets */
+    .corner-accent {
+      position: absolute;
+      width: 20px; height: 20px;
+      border-color: var(--green-mid);
+      border-style: solid;
+      pointer-events: none;
+      opacity: 0.65;
+    }
+    .ca-tl { top: 12px;    left: 12px;  border-width: 2px 0 0 2px; }
+    .ca-tr { top: 12px;    right: 12px; border-width: 2px 2px 0 0; }
+    .ca-bl { bottom: 12px; left: 12px;  border-width: 0 0 2px 2px; }
+    .ca-br { bottom: 12px; right: 12px; border-width: 0 2px 2px 0; }
+
+    /* ══════════════════════════════════════
+       CONTACT
+    ══════════════════════════════════════ */
+    #contact { background: var(--beige-cream); }
+    #contact .section-title { color: var(--black); }
+
+    .contact-form-wrapper {
+      max-width: 480px;
+      margin: 0 auto;
+      border: 2px solid var(--green-dark);
+      border-radius: 20px;
+      padding: 40px;
+      background: rgba(255,255,255,0.5);
+    }
+
+    .form-row {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 18px;
+    }
+
+    .form-label {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: var(--black);
+      min-width: 76px;
+    }
+
+    .form-input {
+      flex: 1;
+      height: 36px;
+      background: var(--beige-light);
+      border: 1.5px solid var(--green-pale);
+      border-radius: 7px;
+      padding: 0 12px;
+      font-family: 'Courier Prime', monospace;
+      font-size: 0.84rem;
+      color: var(--black);
+      outline: none;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+    .form-input:focus {
+      border-color: var(--green-mid);
+      box-shadow: 0 0 0 3px rgba(45,90,39,0.12);
+    }
+
+    .form-textarea {
+      flex: 1;
+      height: 96px;
+      background: var(--beige-light);
+      border: 1.5px solid var(--green-pale);
+      border-radius: 7px;
+      padding: 10px 12px;
+      font-family: 'Courier Prime', monospace;
+      font-size: 0.84rem;
+      color: var(--black);
+      outline: none;
+      resize: none;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+    .form-textarea:focus {
+      border-color: var(--green-mid);
+      box-shadow: 0 0 0 3px rgba(45,90,39,0.12);
+    }
+
+    .form-actions {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 24px;
+    }
+
+    .btn {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.76rem;
+      font-weight: 700;
+      letter-spacing: 0.07em;
+      padding: 10px 26px;
+      border-radius: 8px;
+      border: 2px solid var(--green-dark);
+      cursor: pointer;
+      transition: background 0.2s ease, transform 0.2s ease;
+    }
+
+    .btn-clear {
+      background: var(--beige-light);
+      color: var(--black);
+    }
+    .btn-clear:hover {
+      background: var(--beige-mid);
+      transform: translateY(-2px);
+    }
+
+    .btn-send {
+      background: var(--green-dark);
+      color: var(--beige-cream);
+    }
+    .btn-send:hover {
+      background: var(--green-mid);
+      transform: translateY(-2px);
+    }
+
+    /* ══════════════════════════════════════
+       BIBLE VERSE
+    ══════════════════════════════════════ */
+    #verse {
+      background: var(--green-dark);
+      padding: 56px 48px;
+      text-align: center;
+      border-top: 1px solid rgba(168,197,160,0.2);
+      border-bottom: 1px solid rgba(168,197,160,0.2);
+    }
+
+    .verse-text {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(1rem, 2.2vw, 1.35rem);
+      line-height: 1.9;
+      color: var(--beige-light);
+      max-width: 680px;
+      margin: 0 auto 16px;
+      font-style: italic;
+      opacity: 0.92;
+    }
+
+    .verse-ref {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.72rem;
+      letter-spacing: 0.1em;
+      color: var(--green-pale);
+      text-transform: uppercase;
+    }
+
+    /* ══════════════════════════════════════
+       FOOTER
+    ══════════════════════════════════════ */
+    footer {
+      background: var(--green-dark);
+      padding: 32px 48px;
+      border-top: 2px solid var(--green-mid);
+    }
+
+    .footer-socials {
+      display: flex;
+      justify-content: center;
+      gap: 14px;
+      margin-bottom: 22px;
+    }
+
+    .footer-social-box {
+      width: 38px;
+      height: 38px;
+      background: rgba(168,197,160,0.12);
+      border-radius: 6px;
+      transition: transform 0.2s ease, background 0.2s ease;
+      object-fit: contain;
+      padding: 5px;
+    }
+    .footer-social-box:hover {
+      transform: translateY(-4px);
+      background: rgba(168,197,160,0.28);
+    }
+
+    .footer-copyright {
+      text-align: center;
+      font-family: 'Space Mono', monospace;
+      font-size: 0.72rem;
+      color: var(--green-pale);
+      letter-spacing: 0.06em;
+    }
+
+    /* ══════════════════════════════════════
+       RESPONSIVE
+    ══════════════════════════════════════ */
+    @media (max-width: 768px) {
+      nav { padding: 16px 22px; }
+      .nav-links { gap: 18px; }
+      section { padding: 56px 22px; }
+      .hero-content { padding: 56px 22px; }
+      .about-grid { grid-template-columns: 1fr; text-align: center; gap: 32px; }
+      .avatar-placeholder { margin: 0 auto; }
+      .about-name { text-align: center; }
+      .projects-grid { grid-template-columns: 1fr; max-width: 360px; }
+    }
+
+  </style>
+</head>
+<body>
+
+  <!-- ══════════════════════════════════
+       NAV
+  ══════════════════════════════════ -->
+  <nav>
+    <ul class="nav-links">
+      <li><a href="#home">Home</a></li>
+      <li><a href="#about">About me</a></li>
+      <li><a href="#skills">Skill</a></li>
+      <li><a href="#projects">Project</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </nav>
+
+  <!-- ══════════════════════════════════
+       HERO  — entire section = bg placeholder
+  ══════════════════════════════════ -->
+  <!--
+    TO ADD YOUR BACKGROUND IMAGE:
+      In CSS #home, add these two lines:
+        background-image: url('your-photo.jpg');
+        background-position: center;
+      The beige overlay will keep text readable automatically.
+  -->
+  <section id="home">
+    <div class="hero-content">
+      <h1 class="hero-title">
+        Cybersecurity<br/>
+        and <span>Machine<br/>Learning</span> Analyst<span class="blink">_</span>
+      </h1>
+      <p class="hero-desc">
+        A Cybersecurity &amp; Machine Learning Analyst specializes in the intersection
+        of data science and information security. I design and implement intelligent
+        systems that leverage predictive modeling and anomaly detection to identify
+        emerging threats, automate incident response, and reduce the dwell time of
+        sophisticated cyber attacks.
+      </p>
+      <!-- 5 small square social icon placeholders -->
+      <div class="hero-socials">
+        <img src="gallery/python.png" alt="" class="social-box">
+        <img src="gallery/letter-c.png" alt="" class="social-box">
+        <img src="gallery/html-5.png" alt="" class="social-box">
+        <img src="gallery/css-3.png" alt="" class="social-box">
+        <img src="gallery/js (1).png" alt="" class="social-box">
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════
+       ABOUT
+  ══════════════════════════════════ -->
+  <section id="about">
+    <h2 class="section-title">About me</h2>
+    <div class="about-grid">
+      <!-- profile photo -->
+      <img src="gallery/inbound1937610981580308426.jpg" alt="John Paul G. Galve" class="avatar-placeholder">
+      <div>
+        <p class="about-name">John Paul G. Galve</p>
+        <p class="about-text">
+          A first year college student in the Our Lady of Fatima University Quezon,
+          taking a Bachelor in Science and Information Technology. I am 18 years old
+          and currently living in Rodriguez Rizal Philippines. My interest is about
+          problem solving and puzzles, that's why I end up in this field.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════
+       SKILLS
+  ══════════════════════════════════ -->
+  <section id="skills">
+    <h2 class="section-title">Skills</h2>
+    <div class="skills-grid">
+      <div class="skill-card">
+        <img src="gallery/python.png" alt="Python">
+        <span>Python</span>
+      </div>
+      <div class="skill-card">
+        <img src="gallery/letter-c.png" alt="C">
+        <span>C</span>
+      </div>
+      <div class="skill-card">
+        <img src="gallery/html-5.png" alt="HTML">
+        <span>HTML</span>
+      </div>
+      <div class="skill-card">
+        <img src="gallery/css-3.png" alt="CSS">
+        <span>CSS</span>
+      </div>
+      <div class="skill-card">
+        <img src="gallery/js (1).png" alt="Javascript">
+        <span>Javascript</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════
+       PROJECTS
+  ══════════════════════════════════ -->
+  <section id="projects">
+    <h2 class="section-title">Projects</h2>
+    <p class="projects-hint">Click on any project to view it</p>
+    <div class="projects-grid">
+      <a href="#" class="project-item"><!-- TODO: replace # with your project URL -->
+        <div class="project-card">
+          <img src="gallery/multiplicationMosaic.png" alt="Project 1" class="project-img">
+          <div class="corner-accent ca-tl"></div>
+          <div class="corner-accent ca-br"></div>
+          <div class="project-overlay">
+            <p class="project-overlay-title">Multiplication Mosaic</p>
+            <p class="project-overlay-desc">I used the C programming language, The project is about the client being ask a two input and the first input will be the range of the multiplication table and the second input will be the size of the characters inside the mosaic.</p>
+          </div>
+        </div>
+        <span class="project-label">Multiplication Mosaic</span>
+      </a>
+      <a href="#" class="project-item"><!-- TODO: replace # with your project URL -->
+        <div class="project-card">
+          <img src="gallery/palindrome.png" alt="Project 2" class="project-img">
+          <div class="corner-accent ca-tl"></div>
+          <div class="corner-accent ca-br"></div>
+          <div class="project-overlay">
+            <p class="project-overlay-title">Pyramid Palindrome</p>
+            <p class="project-overlay-desc">I used the C programming language, The project is about creating a pyramid but with a twist of the characters should be in a palindrome state.</p>
+          </div>
+        </div>
+        <span class="project-label">Pyramid Palindrome</span>
+      </a>
+      <a href="#" class="project-item"><!-- TODO: replace # with your project URL -->
+        <div class="project-card">
+          <img src="gallery/cli.png" alt="Project 3" class="project-img">
+          <div class="corner-accent ca-tl"></div>
+          <div class="corner-accent ca-br"></div>
+          <div class="project-overlay">
+            <p class="project-overlay-title">Client UI</p>
+            <p class="project-overlay-desc">Here I used the Python programming language this project is about a user interface the client can register, view information, log in, and even see the log or activity history. I used the hashed method to conceal some information.</p>
+          </div>
+        </div>
+        <span class="project-label">Client UI</span>
+      </a>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════
+       CONTACT
+  ══════════════════════════════════ -->
+  <section id="contact">
+    <h2 class="section-title">Contact</h2>
+    <form class="contact-form-wrapper" id="contact-form">
+      <div class="form-row">
+        <label class="form-label" for="name">Name:</label>
+        <input class="form-input" id="name" type="text"/>
+      </div>
+      <div class="form-row">
+        <label class="form-label" for="email">Email:</label>
+        <input class="form-input" id="email" type="email"/>
+      </div>
+      <div class="form-row" style="align-items: flex-start;">
+        <label class="form-label" for="message" style="padding-top: 8px;">Message:</label>
+        <textarea class="form-textarea" id="message"></textarea>
+      </div>
+      <div class="form-actions">
+        <!-- type="reset" clears the form natively — no JS needed -->
+        <button class="btn btn-clear" type="reset">Clear</button>
+        <button class="btn btn-send" type="submit">Send</button>
+      </div>
+    </form>
+  </section>
+
+  <!-- ══════════════════════════════════
+       BIBLE VERSE
+  ══════════════════════════════════ -->
+  <section id="verse">
+    <blockquote class="verse-text">
+      "Whatever you do, work at it with all your heart, as working for the Lord, not for human masters… and give thanks in all circumstances."
+    </blockquote>
+    <p class="verse-ref">Colossians 3:23 &amp; 1 Thessalonians 5:18</p>
+  </section>
+
+  <!-- ══════════════════════════════════
+       FOOTER
+  ══════════════════════════════════ -->
+  <footer>
+    <div class="footer-socials">
+      <a href="#" target="_blank"><!-- TODO: Facebook URL -->
+        <img src="gallery/facebook-app-symbol.png" alt="Facebook" class="footer-social-box">
+      </a>
+      <a href="#" target="_blank"><!-- TODO: Instagram URL -->
+        <img src="gallery/instagram (1).png" alt="Instagram" class="footer-social-box">
+      </a>
+      <a href="#" target="_blank"><!-- TODO: GitHub URL -->
+        <img src="gallery/github.png" alt="GitHub" class="footer-social-box">
+      </a>
+      <a href="#" target="_blank"><!-- TODO: Twitter URL -->
+        <img src="gallery/twitter.png" alt="Twitter" class="footer-social-box">
+      </a>
+      <a href="#" target="_blank"><!-- TODO: Email or messaging URL -->
+        <img src="gallery/message.png" alt="Message" class="footer-social-box">
+      </a>
+    </div>
+    <p class="footer-copyright">Copyright &copy; 2026</p>
+  </footer>
+
+</body>
+</html>
